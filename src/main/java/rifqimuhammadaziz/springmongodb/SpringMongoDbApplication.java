@@ -34,10 +34,10 @@ public class SpringMongoDbApplication {
                     "Semarang",
                     "52121"
             );
-            String email = "bagasdwiyulianto@gmail.com";
+            String email = "rifqimuhammadaziz@gmail.com";
             Student student = new Student(
-                    "Bagas",
-                    "Dwi Yulianto",
+                    "Rifqi",
+                    "Muhammad Aziz",
                     email,
                     Gender.MALE,
                     address,
@@ -46,19 +46,30 @@ public class SpringMongoDbApplication {
                     LocalDateTime.now()
             );
 
-            Query query = new Query();
-            query.addCriteria(Criteria.where("email").is(email));
-
-            List<Student> students = mongoTemplate.find(query, Student.class);
-            if (students.size() > 1) {
-                throw new IllegalStateException("Found many students with email " + email);
-            }
-            if (students.isEmpty()) {
-                log.info("Inserting STUDENT: " + student);
-                studentRepository.insert( student);
-            } else {
-                log.warn(student.getEmail() + " already exists.");
-            }
+            // usingMongoTemplateAndQuery(studentRepository, mongoTemplate, email, student);
+            studentRepository.findStudentByEmail(email)
+                    .ifPresentOrElse(s -> {
+                        log.warn(s.getEmail() + " already exists.");
+                    }, () -> {
+                        log.info("Inserting STUDENT: " + student.getEmail());
+                        studentRepository.insert(student);
+                    });
         };
+    }
+
+    private void usingMongoTemplateAndQuery(StudentRepository studentRepository, MongoTemplate mongoTemplate, String email, Student student) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("email").is(email));
+
+        List<Student> students = mongoTemplate.find(query, Student.class);
+        if (students.size() > 1) {
+            throw new IllegalStateException("Found many students with email " + email);
+        }
+        if (students.isEmpty()) {
+            log.info("Inserting STUDENT: " + student);
+            studentRepository.insert(student);
+        } else {
+            log.warn(student.getEmail() + " already exists.");
+        }
     }
 }
