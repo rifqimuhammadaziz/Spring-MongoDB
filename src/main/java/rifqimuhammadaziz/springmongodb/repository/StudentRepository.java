@@ -12,4 +12,6 @@ public interface StudentRepository
     Optional<Student> findStudentByEmail(String email);
     List<Student> findStudentsByFirstName(String name);
     List<Student> findStudentByGenderIgnoreCase(Gender gender);
+    void deleteStudentByEmail(String email);
+    boolean existsByEmail(String email);
 }

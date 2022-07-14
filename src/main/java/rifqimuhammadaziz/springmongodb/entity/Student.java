@@ -22,6 +22,7 @@ public class Student {
     private String email;
     private Gender gender;
     private Address address;
+    private String phoneNumber;
     private List<String> favouriteSubjects;
     private BigDecimal totalSpentInBooks;
     private LocalDateTime created;
