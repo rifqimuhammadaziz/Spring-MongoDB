@@ -15,10 +15,10 @@ public class StudentController {
 
     private final StudentService studentService;
 
-//    @PostMapping
-//    public Student save(@RequestBody Student student) {
-//        return studentService.save(student);
-//    }
+    @PostMapping
+    public Student save(@RequestBody Student student) {
+        return studentService.save(student);
+    }
 
     @GetMapping
     public List<Student> findAllStudents() {
@@ -38,5 +38,10 @@ public class StudentController {
     @GetMapping("/gender/{gender}")
     public List<Student> findStudentByName(@PathVariable Gender gender) {
         return studentService.findStudentByGender(gender);
+    }
+
+    @PutMapping("/update/{email}")
+    public Student updateStudentByEmail(@PathVariable String email, @RequestBody Student student) {
+        return studentService.updateStudentByEmail(email, student);
     }
 }

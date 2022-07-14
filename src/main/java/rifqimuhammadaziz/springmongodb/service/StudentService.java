@@ -13,4 +13,8 @@ public interface StudentService {
     List<Student> findStudentsByFirstNameContains(String name);
 
     List<Student> findStudentByGender(Gender gender);
+
+    Student save(Student student);
+
+    Student updateStudentByEmail(String email, Student student);
 }
